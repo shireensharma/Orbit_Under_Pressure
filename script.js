@@ -746,10 +746,6 @@ function renderAudience(summary, results) {
   rigorHeadingNode.textContent = copy.rigorHeading;
   rigorIntroNode.textContent = copy.rigorIntro;
 
-  impactNarrativeNode.textContent =
-    `${copy.impactIntro} In this scenario, tracked debris reaches about ${formatNumber(last.debris)} by year ${last.year}, ` +
-    `the most stressed band is ${worstBand.label}, and the average orbit health score settles near ${Math.round(summary.avgScore)}.`;
-
   audienceBriefCardsNode.innerHTML = copy.briefCards
     .map((item) => `<div class="highlight"><strong>${item.title}</strong>${item.body}</div>`)
     .join("");
