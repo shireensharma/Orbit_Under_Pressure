@@ -256,6 +256,11 @@ h2 {
   line-height: 1.6;
 }
 
+#impactNarrative {
+  color: var(--muted);
+  min-height: 2.8rem;
+}
+
 .control {
   display: grid;
   gap: 8px;

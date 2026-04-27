@@ -745,7 +745,7 @@ function renderAudience(summary, results) {
   glossaryIntroNode.textContent = copy.glossaryIntro;
   rigorHeadingNode.textContent = copy.rigorHeading;
   rigorIntroNode.textContent = copy.rigorIntro;
-  impactNarrativeNode.innerHTML = "<br><br>";
+  impactNarrativeNode.textContent = copy.impactIntro;
 
   audienceBriefCardsNode.innerHTML = copy.briefCards
     .map((item) => `<div class="highlight"><strong>${item.title}</strong>${item.body}</div>`)
