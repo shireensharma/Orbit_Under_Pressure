@@ -517,6 +517,11 @@ let highlightedObjects = [];
 let hoveredObjectName = null;
 
 function formatNumber(value) {
+  if (!isFinite(value)) return "Critical";
+  // If debris exceeds 10 million, switch to scientific notation to save space
+  if (value >= 10000000) {
+    return value.toExponential(2).replace("e+", " x 10^");
+  }
   return Math.round(value).toLocaleString();
 }
 
