@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbit Under Pressure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Orbital Debris Explainer Simulator</p>
+        <h1>Orbit Under Pressure</h1>
+        <p class="lede">
+          A tutorial-style simulator for understanding how traffic in low Earth orbit builds up, why debris can start
+          feeding on itself, and how different choices change the future.
+        </p>
+        <p class="mission">
+          Research question: How does congestion evolve across LEO altitude bands when launches, disposal,
+          passivation, and cleanup improve at different rates?
+        </p>
+      </div>
+      <div class="hero-card">
+        <p class="hero-card-label">Observed Starting Point</p>
+        <p class="hero-card-text">ESA reports about 40,000 tracked objects in orbit, including about 11,000 active payloads, with especially heavy crowding in LEO around 500 to 600 km.</p>
+      </div>
+    </section>
+
+    <section class="toolbar panel">
+      <div>
+        <h2>Audience View</h2>
+        <p class="toolbar-copy">Choose who the page is speaking to. The explanations, action section, and terminology will adjust.</p>
+      </div>
+      <div id="viewModeButtons" class="view-modes">
+        <button type="button" class="view-mode-button active" data-view="general">General Public</button>
+        <button type="button" class="view-mode-button" data-view="policy">Policymakers</button>
+        <button type="button" class="view-mode-button" data-view="universities">Universities</button>
+        <button type="button" class="view-mode-button" data-view="industry">Industry</button>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="panel fact-card">
+        <span class="fact-label">Tracked objects</span>
+        <strong>~40,000</strong>
+        <p>ESA 2025 report, using data through the end of 2024.</p>
+      </article>
+      <article class="panel fact-card">
+        <span class="fact-label">Active payloads</span>
+        <strong>~11,000</strong>
+        <p>Working spacecraft now make up a large share of LEO traffic.</p>
+      </article>
+      <article class="panel fact-card">
+        <span class="fact-label">Objects larger than 1 cm</span>
+        <strong>&gt;1.2 million</strong>
+        <p>Too small to all be tracked individually, but still dangerous.</p>
+      </article>
+      <article class="panel fact-card">
+        <span class="fact-label">Tracked objects added in 2024</span>
+        <strong>&gt;3,000</strong>
+        <p>Major breakup events still change the environment quickly.</p>
+      </article>
+    </section>
+
+    <section class="grid lower-grid intro-grid">
+      <section class="panel">
+        <h2>Audience Briefing For <span id="audienceLabel">General Public</span></h2>
+        <p id="impactNarrative" class="narrative"></p>
+        <div id="audienceBriefCards" class="audience-bullets"></div>
+      </section>
+
+      <section class="panel" id="glossaryPanel">
+        <h2 id="glossaryHeading">Acronym And Terms Guide</h2>
+        <p id="glossaryIntro" class="narrative"></p>
+        <div id="glossaryList" class="glossary-list"></div>
+      </section>
+    </section>
+
+    <section class="grid lower-grid intro-grid">
+      <section class="panel">
+        <h2 id="rigorHeading">How This Projection Works</h2>
+        <p id="rigorIntro" class="narrative"></p>
+        <div id="rigorList" class="method-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2 id="runawayHeading">Runaway Effect Explained</h2>
+        <p id="runawayIntro" class="narrative"></p>
+        <div id="runawaySteps" class="runaway-grid"></div>
+        <div id="yearlyHighlights" class="highlights"></div>
+      </section>
+    </section>
+
+    <section class="grid main-grid">
+      <aside class="panel controls-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Model Controls</h2>
+            <p class="toolbar-copy controls-copy">These sliders change the future that the simulator imagines. They do not change the real 2024 baseline above.</p>
+          </div>
+          <button id="resetButton" class="ghost-button" type="button">Reset</button>
+        </div>
+
+        <div class="scenario-cards" id="scenarioButtons">
+          <button type="button" class="scenario-card active" data-scenario="baseline">
+            <strong>Current baseline</strong>
+            <span>Today's general environment, with no routine cleanup missions.</span>
+          </button>
+          <button type="button" class="scenario-card" data-scenario="constellation">
+            <strong>Heavier launch pressure</strong>
+            <span>More spacecraft are added each year to already popular orbital shells.</span>
+          </button>
+          <button type="button" class="scenario-card" data-scenario="fiveYear">
+            <strong>Stronger disposal rules</strong>
+            <span>More retired spacecraft successfully leave the crowded parts of orbit.</span>
+          </button>
+          <button type="button" class="scenario-card" data-scenario="removal">
+            <strong>Cleanup missions begin</strong>
+            <span>Some of the most dangerous dead objects are actively removed.</span>
+          </button>
+        </div>
+
+        <label class="control">
+          <div class="control-heading">
+            <span>Launches per year</span>
+            <strong id="launchesValue">1,400</strong>
+          </div>
+          <p class="control-help">How many new spacecraft enter low Earth orbit each year. More launches usually mean more crowding, unless cleanup also improves.</p>
+          <input id="launchesInput" type="range" min="300" max="1900" step="50" value="1400">
+        </label>
+
+        <label class="control">
+          <div class="control-heading">
+            <span>End-of-mission cleanup success</span>
+            <strong id="complianceValue">68%</strong>
+          </div>
+          <p class="control-help">The share of spacecraft that successfully leave busy orbit lanes after they finish their jobs instead of becoming space junk.</p>
+          <input id="complianceInput" type="range" min="35" max="98" step="1" value="68">
+        </label>
+
+        <label class="control">
+          <div class="control-heading">
+            <span>Passivation rate</span>
+            <strong id="passivationValue">72%</strong>
+          </div>
+          <p class="control-help">The share of old spacecraft that are made safer by emptying leftover fuel or stored energy so they are less likely to explode later.</p>
+          <input id="passivationInput" type="range" min="30" max="100" step="1" value="72">
+        </label>
+
+        <label class="control">
+          <div class="control-heading">
+            <span>Cleanup missions per year</span>
+            <strong id="removalValue">0</strong>
+          </div>
+          <p class="control-help">How many active missions try to remove large dead objects that could cause especially damaging future collisions.</p>
+          <input id="removalInput" type="range" min="0" max="8" step="1" value="0">
+        </label>
+
+        <label class="control">
+          <div class="control-heading">
+            <span>Runaway effect strength</span>
+            <strong id="cascadeValue">55%</strong>
+          </div>
+          <p class="control-help">How strongly one collision makes later collisions more likely. Higher values mean debris starts feeding on itself more aggressively.</p>
+          <input id="cascadeInput" type="range" min="0" max="100" step="1" value="55">
+        </label>
+
+        <label class="control">
+          <div class="control-heading">
+            <span>Projection horizon</span>
+            <strong id="yearsValue">20 years</strong>
+          </div>
+          <p class="control-help">How far into the future the simulator looks. This view is capped at 20 years to keep the chart readable.</p>
+          <input id="yearsInput" type="range" min="5" max="20" step="1" value="20">
+        </label>
+      </aside>
+
+      <section class="results-stack">
+        <section class="panel results-panel">
+          <div class="panel-heading">
+            <h2 id="outlookHeading">Why This Matters To Everyday Life</h2>
+            <p id="headlineStatus" class="status-pill">Orbit is stressed but still recoverable</p>
+          </div>
+
+          <div class="metrics">
+            <article class="metric">
+              <span class="metric-label">Tracked debris after projection</span>
+              <strong id="endDebris">0</strong>
+            </article>
+            <article class="metric">
+              <span class="metric-label">Average modeled collision events</span>
+              <strong id="riskLevel">0</strong>
+            </article>
+            <article class="metric">
+              <span class="metric-label">Orbit health score</span>
+              <strong id="orbitScore">0</strong>
+            </article>
+            <article class="metric">
+              <span class="metric-label">Runaway indicator</span>
+              <strong id="cascadeScore">0</strong>
+            </article>
+          </div>
+
+          <div class="chart-wrap">
+            <canvas id="orbitChart" width="980" height="420" aria-label="Projection chart"></canvas>
+          </div>
+
+          <div class="legend">
+            <span><i class="legend-line debris-line"></i>Tracked debris</span>
+            <span><i class="legend-line satellite-line"></i>Active payloads</span>
+            <span><i class="legend-line score-line"></i>Orbit health</span>
+            <span><i class="legend-line collision-line"></i>Collision events</span>
+          </div>
+        </section>
+
+        <section class="panel orbit-panel">
+          <div class="panel-heading">
+            <h2>Rotating Orbit View</h2>
+            <p id="orbitVisualCaption" class="toolbar-copy">Each ring represents one modeled altitude band in LEO. Hover highlighted objects to pause and learn more.</p>
+          </div>
+          <div class="orbit-visual-wrap orbit-visual-shell">
+            <canvas id="orbitVisual" width="620" height="620" aria-label="Rotating orbit visualization"></canvas>
+            <div id="orbitTooltip" class="orbit-tooltip" hidden></div>
+            <div class="orbit-key">
+              <span><i class="orbit-dot active-dot"></i>Active payloads</span>
+              <span><i class="orbit-dot debris-dot"></i>Tracked debris</span>
+              <span><i class="orbit-dot derelict-dot"></i>Derelict objects</span>
+              <span><i class="orbit-dot ring-dot"></i>Highlighted real objects</span>
+              <span><i class="orbit-band band-one"></i>350-500 km</span>
+              <span><i class="orbit-band band-two"></i>500-600 km</span>
+              <span><i class="orbit-band band-three"></i>600-800 km</span>
+              <span><i class="orbit-band band-four"></i>800-1000 km</span>
+              <span><i class="orbit-band band-five"></i>1000-1400 km</span>
+            </div>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="grid lower-grid">
+      <section class="panel">
+        <h2 id="bandsHeading">Where The Traffic Is</h2>
+        <p id="bandsIntro" class="section-copy">
+          Low Earth orbit is not one empty giant circle. Some heights are far more crowded than others, and crowded regions are where the danger builds fastest.
+        </p>
+        <div id="bandCards" class="band-cards"></div>
+      </section>
+
+      <section class="panel">
+        <h2 id="actionsHeading">What The General Public Can Do</h2>
+        <p id="actionsIntro" class="narrative"></p>
+        <div id="audienceActions" class="stakeholder-columns"></div>
+      </section>
+    </section>
+
+    <section class="grid lower-grid">
+      <section class="panel">
+        <h2>Methods Note</h2>
+        <div id="methodsNote" class="method-list"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Current Removal Efforts And Further Reading</h2>
+        <div id="effortsAndReading" class="method-list"></div>
+      </section>
+    </section>
+
+    <section class="grid lower-grid">
+      <section class="panel full-width-panel">
+        <h2>Sources And Assumptions</h2>
+        <div id="sourcesList" class="sources-list two-column-sources"></div>
+      </section>
+    </section>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Shireen Sharma. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
